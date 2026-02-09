@@ -49,7 +49,9 @@ void KamstrupFlowIQ2200Component::send_command_(uint16_t command) {
 
   this->clear_uart_rx_buffer_();
   this->send_message_(msg, msg_len);
+  delay(750); // delay between command and response to avoid overwhelming the meter
   this->read_command_(command);
+  delay(750); // delay between commands to avoid overwhelming the meter
 }
 
 void KamstrupFlowIQ2200Component::send_message_(const uint8_t *msg, int msg_len) {
