@@ -217,7 +217,7 @@ void KamstrupFlowIQ2200Component::set_sensor_value_(uint16_t command, float valu
 
   // Standard sensors
   if (command == CMD_FLOW && this->flow_sensor_ != nullptr) {
-    this->flow_sensor_->publish_state(value);
+    this->flow_sensor_->publish_state(value / 1000.0f);  // convert from l/h to m3/h
   } else if (command == CMD_VOLUME && this->volume_sensor_ != nullptr) {
     this->volume_sensor_->publish_state(value);
   }
