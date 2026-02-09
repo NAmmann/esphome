@@ -14,11 +14,6 @@ void KamstrupFlowIQ2200Component::dump_config() {
   }
   LOG_UPDATE_INTERVAL(this);
 
-  LOG_SENSOR("  ", "Heat Energy", this->heat_energy_sensor_);
-  LOG_SENSOR("  ", "Power", this->power_sensor_);
-  LOG_SENSOR("  ", "Temperature 1", this->temp1_sensor_);
-  LOG_SENSOR("  ", "Temperature 2", this->temp2_sensor_);
-  LOG_SENSOR("  ", "Temperature Difference", this->temp_diff_sensor_);
   LOG_SENSOR("  ", "Flow", this->flow_sensor_);
   LOG_SENSOR("  ", "Volume", this->volume_sensor_);
 
@@ -26,25 +21,6 @@ void KamstrupFlowIQ2200Component::dump_config() {
 }
 
 void KamstrupFlowIQ2200Component::update() {
-  if (this->heat_energy_sensor_ != nullptr) {
-    this->command_queue_.push(CMD_HEAT_ENERGY);
-  }
-
-  if (this->power_sensor_ != nullptr) {
-    this->command_queue_.push(CMD_POWER);
-  }
-
-  if (this->temp1_sensor_ != nullptr) {
-    this->command_queue_.push(CMD_TEMP1);
-  }
-
-  if (this->temp2_sensor_ != nullptr) {
-    this->command_queue_.push(CMD_TEMP2);
-  }
-
-  if (this->temp_diff_sensor_ != nullptr) {
-    this->command_queue_.push(CMD_TEMP_DIFF);
-  }
 
   if (this->flow_sensor_ != nullptr) {
     this->command_queue_.push(CMD_FLOW);
@@ -240,17 +216,7 @@ void KamstrupFlowIQ2200Component::set_sensor_value_(uint16_t command, float valu
   const char *unit = UNITS[unit_idx];
 
   // Standard sensors
-  if (command == CMD_HEAT_ENERGY && this->heat_energy_sensor_ != nullptr) {
-    this->heat_energy_sensor_->publish_state(value);
-  } else if (command == CMD_POWER && this->power_sensor_ != nullptr) {
-    this->power_sensor_->publish_state(value);
-  } else if (command == CMD_TEMP1 && this->temp1_sensor_ != nullptr) {
-    this->temp1_sensor_->publish_state(value);
-  } else if (command == CMD_TEMP2 && this->temp2_sensor_ != nullptr) {
-    this->temp2_sensor_->publish_state(value);
-  } else if (command == CMD_TEMP_DIFF && this->temp_diff_sensor_ != nullptr) {
-    this->temp_diff_sensor_->publish_state(value);
-  } else if (command == CMD_FLOW && this->flow_sensor_ != nullptr) {
+  if (command == CMD_FLOW && this->flow_sensor_ != nullptr) {
     this->flow_sensor_->publish_state(value);
   } else if (command == CMD_VOLUME && this->volume_sensor_ != nullptr) {
     this->volume_sensor_->publish_state(value);

@@ -44,11 +44,6 @@ namespace kamstrup_flowiq2200 {
 */
 
 // KMP Commands
-static const uint16_t CMD_HEAT_ENERGY = 0x003C;
-static const uint16_t CMD_POWER = 0x0050;
-static const uint16_t CMD_TEMP1 = 0x0056;
-static const uint16_t CMD_TEMP2 = 0x0057;
-static const uint16_t CMD_TEMP_DIFF = 0x0059;
 static const uint16_t CMD_FLOW = 0x004A;
 static const uint16_t CMD_VOLUME = 0x0044;
 
@@ -64,11 +59,6 @@ static const char *const UNITS[] = {
 
 class KamstrupFlowIQ2200Component : public PollingComponent, public uart::UARTDevice {
  public:
-  void set_heat_energy_sensor(sensor::Sensor *sensor) { this->heat_energy_sensor_ = sensor; }
-  void set_power_sensor(sensor::Sensor *sensor) { this->power_sensor_ = sensor; }
-  void set_temp1_sensor(sensor::Sensor *sensor) { this->temp1_sensor_ = sensor; }
-  void set_temp2_sensor(sensor::Sensor *sensor) { this->temp2_sensor_ = sensor; }
-  void set_temp_diff_sensor(sensor::Sensor *sensor) { this->temp_diff_sensor_ = sensor; }
   void set_flow_sensor(sensor::Sensor *sensor) { this->flow_sensor_ = sensor; }
   void set_volume_sensor(sensor::Sensor *sensor) { this->volume_sensor_ = sensor; }
   void dump_config() override;
@@ -77,11 +67,6 @@ class KamstrupFlowIQ2200Component : public PollingComponent, public uart::UARTDe
 
  protected:
   // Sensors
-  sensor::Sensor *heat_energy_sensor_{nullptr};
-  sensor::Sensor *power_sensor_{nullptr};
-  sensor::Sensor *temp1_sensor_{nullptr};
-  sensor::Sensor *temp2_sensor_{nullptr};
-  sensor::Sensor *temp_diff_sensor_{nullptr};
   sensor::Sensor *flow_sensor_{nullptr};
   sensor::Sensor *volume_sensor_{nullptr};
 
