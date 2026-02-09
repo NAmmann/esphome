@@ -16,8 +16,6 @@ void KamstrupFlowIQ2200Component::dump_config() {
 
   LOG_SENSOR("  ", "Flow", this->flow_sensor_);
   LOG_SENSOR("  ", "Volume", this->volume_sensor_);
-
-  this->check_uart_settings(1200, 2, uart::UART_CONFIG_PARITY_NONE, 8);
 }
 
 void KamstrupFlowIQ2200Component::update() {

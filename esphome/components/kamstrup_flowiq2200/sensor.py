@@ -45,7 +45,7 @@ CONFIG_SCHEMA = (
 )
 
 FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(
-    "kamstrup_flowiq2200", baud_rate=1200, require_rx=True, require_tx=True
+    "kamstrup_flowiq2200", require_rx=True, require_tx=True
 )
 
 
