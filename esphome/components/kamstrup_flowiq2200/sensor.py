@@ -5,12 +5,12 @@ from esphome.const import (
     CONF_FLOW,
     CONF_ID,
     CONF_VOLUME,
-    DEVICE_CLASS_EMPTY,
+    DEVICE_CLASS_VOLUME_FLOW_RATE,
     DEVICE_CLASS_VOLUME,
     STATE_CLASS_MEASUREMENT,
     STATE_CLASS_TOTAL_INCREASING,
     UNIT_CUBIC_METER,
-    UNIT_EMPTY,
+    UNIT_CUBIC_METER_PER_HOUR,
 )
 
 CODEOWNERS = ["@NAmmann"]
@@ -20,7 +20,6 @@ kamstrup_flowiq2200_ns = cg.esphome_ns.namespace("kamstrup_flowiq2200")
 KamstrupFlowIQ2200Component = kamstrup_flowiq2200_ns.class_(
     "KamstrupFlowIQ2200Component", cg.PollingComponent, uart.UARTDevice
 )
-UNIT_LITRE_PER_HOUR = "l/h"
 
 # Note: The sensor units are set automatically based un the received data from the meter
 CONFIG_SCHEMA = (
@@ -29,9 +28,9 @@ CONFIG_SCHEMA = (
             cv.GenerateID(): cv.declare_id(KamstrupFlowIQ2200Component),
             cv.Optional(CONF_FLOW): sensor.sensor_schema(
                 accuracy_decimals=1,
-                device_class=DEVICE_CLASS_VOLUME,
+                device_class=DEVICE_CLASS_VOLUME_FLOW_RATE,
                 state_class=STATE_CLASS_MEASUREMENT,
-                unit_of_measurement=UNIT_LITRE_PER_HOUR,
+                unit_of_measurement=UNIT_CUBIC_METER_PER_HOUR,
             ),
             cv.Optional(CONF_VOLUME): sensor.sensor_schema(
                 accuracy_decimals=1,
