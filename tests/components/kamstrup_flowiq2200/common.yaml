@@ -14,6 +14,3 @@ sensor:
       name: Flow
     volume:
       name: Volume
-    custom:
-      - name: Custom 1
-        command: 0x1234

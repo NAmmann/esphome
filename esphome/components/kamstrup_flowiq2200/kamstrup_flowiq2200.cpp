@@ -22,11 +22,6 @@ void KamstrupFlowIQ2200Component::dump_config() {
   LOG_SENSOR("  ", "Flow", this->flow_sensor_);
   LOG_SENSOR("  ", "Volume", this->volume_sensor_);
 
-  for (size_t i = 0; i < this->custom_sensors_.size(); i++) {
-    LOG_SENSOR("  ", "Custom Sensor", this->custom_sensors_[i]);
-    ESP_LOGCONFIG(TAG, "    Command: 0x%04X", this->custom_commands_[i]);
-  }
-
   this->check_uart_settings(1200, 2, uart::UART_CONFIG_PARITY_NONE, 8);
 }
 
@@ -57,10 +52,6 @@ void KamstrupFlowIQ2200Component::update() {
 
   if (this->volume_sensor_ != nullptr) {
     this->command_queue_.push(CMD_VOLUME);
-  }
-
-  for (uint16_t custom_command : this->custom_commands_) {
-    this->command_queue_.push(custom_command);
   }
 }
 
@@ -263,13 +254,6 @@ void KamstrupFlowIQ2200Component::set_sensor_value_(uint16_t command, float valu
     this->flow_sensor_->publish_state(value);
   } else if (command == CMD_VOLUME && this->volume_sensor_ != nullptr) {
     this->volume_sensor_->publish_state(value);
-  }
-
-  // Custom sensors
-  for (size_t i = 0; i < this->custom_commands_.size(); i++) {
-    if (command == this->custom_commands_[i]) {
-      this->custom_sensors_[i]->publish_state(value);
-    }
   }
 
   ESP_LOGD(TAG, "Received value for command 0x%04X: %.3f [%s]", command, value, unit);

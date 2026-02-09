@@ -3,7 +3,6 @@ from esphome.components import sensor, uart
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_COMMAND,
-    CONF_CUSTOM,
     CONF_FLOW,
     CONF_ID,
     CONF_POWER,
@@ -85,14 +84,6 @@ CONFIG_SCHEMA = (
                 state_class=STATE_CLASS_TOTAL_INCREASING,
                 unit_of_measurement=UNIT_CUBIC_METER,
             ),
-            cv.Optional(CONF_CUSTOM): cv.ensure_list(
-                sensor.sensor_schema(
-                    accuracy_decimals=1,
-                    device_class=DEVICE_CLASS_EMPTY,
-                    state_class=STATE_CLASS_MEASUREMENT,
-                    unit_of_measurement=UNIT_EMPTY,
-                ).extend({cv.Required(CONF_COMMAND): cv.hex_uint16_t})
-            ),
         }
     )
     .extend(cv.polling_component_schema("60s"))
@@ -124,9 +115,3 @@ async def to_code(config):
         conf = config[key]
         sens = await sensor.new_sensor(conf)
         cg.add(getattr(var, f"set_{key}_sensor")(sens))
-
-    # Custom sensors
-    if CONF_CUSTOM in config:
-        for conf in config[CONF_CUSTOM]:
-            sens = await sensor.new_sensor(conf)
-            cg.add(var.add_custom_sensor(sens, conf[CONF_COMMAND]))
