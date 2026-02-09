@@ -27,13 +27,13 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(KamstrupFlowIQ2200Component),
             cv.Optional(CONF_FLOW): sensor.sensor_schema(
-                accuracy_decimals=1,
+                accuracy_decimals=3,
                 device_class=DEVICE_CLASS_VOLUME_FLOW_RATE,
                 state_class=STATE_CLASS_MEASUREMENT,
                 unit_of_measurement=UNIT_CUBIC_METER_PER_HOUR,
             ),
             cv.Optional(CONF_VOLUME): sensor.sensor_schema(
-                accuracy_decimals=1,
+                accuracy_decimals=3,
                 device_class=DEVICE_CLASS_VOLUME,
                 state_class=STATE_CLASS_TOTAL_INCREASING,
                 unit_of_measurement=UNIT_CUBIC_METER,
