@@ -5,43 +5,31 @@
 #include "esphome/core/component.h"
 
 namespace esphome {
-namespace kamstrup_kmp {
+namespace kamstrup_flowiq2200 {
 
 /*
     ===========================================================================
-    ===                            KAMSTRUP KMP                             ===
+    ===                            KAMSTRUP FlowIQ2200                      ===
     ===========================================================================
 
-    Kamstrup Meter Protocol (KMP) is a protocol used with Kamstrup district
-    heating meters, e.g. Kamstrup MULTICAL 403.
-    These devices register consumed heat from a district heating system.
-    It does this by measuring the incoming and outgoing water temperature
-    and by measuring the water flow. The temperature difference (delta T)
-    together with the water flow results in consumed energy, typically
-    in giga joule (GJ).
+    Kamstrup Meter Protocol (KMP) is a protocol used also with Kamstrup
+    flow meters, e.g. Kamstrup FlowIQ2200.
+    These devices register consumed flow and volume.
 
-    The Kamstrup Multical has an optical interface just above the display.
+    The Kamstrup FlowIQ2200 has an optical interface just above the display.
     This interface is essentially an RS-232 interface using a proprietary
     protocol (Kamstrup Meter Protocol [KMP]).
 
     The integration uses this optical interface to periodically read the
     configured values (sensors) from the meter. Supported sensors are:
-      - Heat Energy               [GJ]
-      - Current Power Consumption [kW]
-      - Temperature 1             [°C]
-      - Temperature 2             [°C]
-      - Temperature Difference    [°K]
       - Water Flow                [l/h]
-      - Volume                    [m3]
-
-    Apart from these supported 'fixed' sensors, the user can configure up to
-    five custom sensors. The KMP command (16 bit unsigned int) has to be
-    provided in that case.
+      - Water Volume              [m3]
 
     Note:
-    The optical interface is enabled as soon as a button on the meter is pushed.
+    The optical interface is enabled as soon as a magnet is placed on the meter.
     The interface stays active for a few minutes. To keep the interface 'alive'
-    magnets must be placed around the optical sensor.
+    the magnet must be placed around the optical sensor and the communication needs
+    to be continous.
 
     Units:
     Units are set using the regular Sensor config in the user yaml. However,
@@ -49,7 +37,8 @@ namespace kamstrup_kmp {
     is enabled, the received value with the received unit are logged.
 
     Acknowledgement:
-    This interface was inspired by:
+    This interface is a clone of the Kampstrup_KMP interface with some adjustments.
+    The information was gathered at the following locations:
       - https://atomstar.tweakblogs.net/blog/19110/reading-out-kamstrup-multical-402-403-with-home-built-optical-head
       - https://wiki.hal9k.dk/projects/kamstrup
 */
@@ -73,7 +62,7 @@ static const char *const UNITS[] = {
     "mm:dd", "",     "bar",  "RTC",   "ASCII",   "m3 x 10", "ton x 10", "GJ x 10",  "minutes",  "Bitfield",
     "s",     "ms",   "days", "RTC-Q", "Datetime"};
 
-class KamstrupKMPComponent : public PollingComponent, public uart::UARTDevice {
+class KamstrupFlowIQ2200Component : public PollingComponent, public uart::UARTDevice {
  public:
   void set_heat_energy_sensor(sensor::Sensor *sensor) { this->heat_energy_sensor_ = sensor; }
   void set_power_sensor(sensor::Sensor *sensor) { this->power_sensor_ = sensor; }
@@ -126,5 +115,5 @@ class KamstrupKMPComponent : public PollingComponent, public uart::UARTDevice {
 // "true" CCITT CRC-16
 uint16_t crc16_ccitt(const uint8_t *buffer, int len);
 
-}  // namespace kamstrup_kmp
+}  // namespace kamstrup_flowiq2200
 }  // namespace esphome

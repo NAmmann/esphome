@@ -1,14 +1,14 @@
-#include "kamstrup_kmp.h"
+#include "kamstrup_flowiq2200.h"
 
 #include "esphome/core/log.h"
 
 namespace esphome {
-namespace kamstrup_kmp {
+namespace kamstrup_flowiq2200 {
 
-static const char *const TAG = "kamstrup_kmp";
+static const char *const TAG = "kamstrup_flowiq2200";
 
-void KamstrupKMPComponent::dump_config() {
-  ESP_LOGCONFIG(TAG, "kamstrup_kmp:");
+void KamstrupFlowIQ2200Component::dump_config() {
+  ESP_LOGCONFIG(TAG, "kamstrup_flowiq2200:");
   if (this->is_failed()) {
     ESP_LOGE(TAG, ESP_LOG_MSG_COMM_FAIL);
   }
@@ -30,7 +30,7 @@ void KamstrupKMPComponent::dump_config() {
   this->check_uart_settings(1200, 2, uart::UART_CONFIG_PARITY_NONE, 8);
 }
 
-void KamstrupKMPComponent::update() {
+void KamstrupFlowIQ2200Component::update() {
   if (this->heat_energy_sensor_ != nullptr) {
     this->command_queue_.push(CMD_HEAT_ENERGY);
   }
@@ -64,7 +64,7 @@ void KamstrupKMPComponent::update() {
   }
 }
 
-void KamstrupKMPComponent::loop() {
+void KamstrupFlowIQ2200Component::loop() {
   if (!this->command_queue_.empty()) {
     uint16_t command = this->command_queue_.front();
     this->send_command_(command);
@@ -72,7 +72,7 @@ void KamstrupKMPComponent::loop() {
   }
 }
 
-void KamstrupKMPComponent::send_command_(uint16_t command) {
+void KamstrupFlowIQ2200Component::send_command_(uint16_t command) {
   uint32_t msg_len = 5;
   uint8_t msg[msg_len];
 
@@ -87,7 +87,7 @@ void KamstrupKMPComponent::send_command_(uint16_t command) {
   this->read_command_(command);
 }
 
-void KamstrupKMPComponent::send_message_(const uint8_t *msg, int msg_len) {
+void KamstrupFlowIQ2200Component::send_message_(const uint8_t *msg, int msg_len) {
   int buffer_len = msg_len + 2;
   uint8_t buffer[buffer_len];
 
@@ -122,14 +122,14 @@ void KamstrupKMPComponent::send_message_(const uint8_t *msg, int msg_len) {
   this->write_array(tx_msg, tx_msg_len);
 }
 
-void KamstrupKMPComponent::clear_uart_rx_buffer_() {
+void KamstrupFlowIQ2200Component::clear_uart_rx_buffer_() {
   uint8_t tmp;
   while (this->available()) {
     this->read_byte(&tmp);
   }
 }
 
-void KamstrupKMPComponent::read_command_(uint16_t command) {
+void KamstrupFlowIQ2200Component::read_command_(uint16_t command) {
   uint8_t buffer[20] = {0};
   int buffer_len = 0;
   int data;
@@ -194,7 +194,7 @@ void KamstrupKMPComponent::read_command_(uint16_t command) {
   this->parse_command_message_(command, msg, msg_len);
 }
 
-void KamstrupKMPComponent::parse_command_message_(uint16_t command, const uint8_t *msg, int msg_len) {
+void KamstrupFlowIQ2200Component::parse_command_message_(uint16_t command, const uint8_t *msg, int msg_len) {
   // Validate the message
   if (msg_len < 8) {
     ESP_LOGE(TAG, "Received invalid message (message too small)");
@@ -245,7 +245,7 @@ void KamstrupKMPComponent::parse_command_message_(uint16_t command, const uint8_
   this->set_sensor_value_(command, value, unit_idx);
 }
 
-void KamstrupKMPComponent::set_sensor_value_(uint16_t command, float value, uint8_t unit_idx) {
+void KamstrupFlowIQ2200Component::set_sensor_value_(uint16_t command, float value, uint8_t unit_idx) {
   const char *unit = UNITS[unit_idx];
 
   // Standard sensors
@@ -295,5 +295,5 @@ uint16_t crc16_ccitt(const uint8_t *buffer, int len) {
   return (uint16_t) reg;
 }
 
-}  // namespace kamstrup_kmp
+}  // namespace kamstrup_flowiq2200
 }  // namespace esphome

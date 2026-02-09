@@ -1,5 +1,5 @@
 sensor:
-  - platform: kamstrup_kmp
+  - platform: kamstrup_flowiq2200
     heat_energy:
       name: Heat Energy
     power:

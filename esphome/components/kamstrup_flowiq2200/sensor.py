@@ -22,12 +22,12 @@ from esphome.const import (
     UNIT_KILOWATT,
 )
 
-CODEOWNERS = ["@cfeenstra1024"]
+CODEOWNERS = ["@NAmmann"]
 DEPENDENCIES = ["uart"]
 
-kamstrup_kmp_ns = cg.esphome_ns.namespace("kamstrup_kmp")
-KamstrupKMPComponent = kamstrup_kmp_ns.class_(
-    "KamstrupKMPComponent", cg.PollingComponent, uart.UARTDevice
+kamstrup_flowiq2200_ns = cg.esphome_ns.namespace("kamstrup_flowiq2200")
+KamstrupFlowIQ2200Component = kamstrup_flowiq2200_ns.class_(
+    "KamstrupFlowIQ2200Component", cg.PollingComponent, uart.UARTDevice
 )
 
 CONF_HEAT_ENERGY = "heat_energy"
@@ -42,7 +42,7 @@ UNIT_LITRE_PER_HOUR = "l/h"
 CONFIG_SCHEMA = (
     cv.Schema(
         {
-            cv.GenerateID(): cv.declare_id(KamstrupKMPComponent),
+            cv.GenerateID(): cv.declare_id(KamstrupFlowIQ2200Component),
             cv.Optional(CONF_HEAT_ENERGY): sensor.sensor_schema(
                 accuracy_decimals=3,
                 device_class=DEVICE_CLASS_ENERGY,
@@ -100,7 +100,7 @@ CONFIG_SCHEMA = (
 )
 
 FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(
-    "kamstrup_kmp", baud_rate=1200, require_rx=True, require_tx=True
+    "kamstrup_flowiq2200", baud_rate=1200, require_rx=True, require_tx=True
 )
 
 
