@@ -3,6 +3,7 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/uart/uart.h"
 #include "esphome/core/component.h"
+#include <queue>
 
 namespace esphome {
 namespace kamstrup_flowiq2200 {
