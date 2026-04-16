@@ -131,12 +131,24 @@ void KamstrupFlowIQ2200Component::read_command_(uint16_t command) {
 
   //
   // For debugging: Write buffer to console
-  std::stringstream ss;
+  // Jeder Byte braucht 2 Zeichen + optional ein Leerzeichen + '\0'
+  const int max_len = buffer_len * 3 + 1;
+  char buffer_str[max_len];
+  
+  char* ptr = buffer_str;
+  
   for (int i = 0; i < buffer_len; i++) {
-    ss << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
-       << static_cast<int>(static_cast<unsigned char>(buffer[i])) << " ";
+      sprintf(ptr, "%02X ", (unsigned char)buffer[i]);
+      ptr += 3; // 2 Zeichen + Leerzeichen
   }
-  ESP_LOGI(TAG, "Buffer: %s", ss.str().c_str());
+  
+  // Optional: letztes Leerzeichen entfernen
+  if (buffer_len > 0) {
+      *(ptr - 1) = '\0';
+  } else {
+      *ptr = '\0';
+  }
+  ESP_LOGI(TAG, "Buffer: %s", buffer_str);
 
   // Validate message (prefix and suffix)
   if (buffer[0] != 0x40) {
