@@ -128,6 +128,15 @@ void KamstrupFlowIQ2200Component::read_command_(uint16_t command) {
     return;
   }
 
+  //
+  // For debugging: Write buffer to console
+  std::stringstream ss;
+  for (int i = 0; i < buffer_len; i++) {
+    ss << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
+       << static_cast<int>(static_cast<unsigned char>(buffer[i])) << " ";
+  }
+  ESP_LOGI(TAG, "Buffer: %s", ss.str().c_str());
+
   // Validate message (prefix and suffix)
   if (buffer[0] != 0x40) {
     ESP_LOGE(TAG, "Received invalid message (prefix mismatch received 0x%02X, expected 0x40)", buffer[0]);
