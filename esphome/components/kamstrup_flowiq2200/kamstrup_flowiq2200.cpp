@@ -1,5 +1,6 @@
 #include "kamstrup_flowiq2200.h"
-
+#include <sstream>
+#include <iomanip>
 #include "esphome/core/log.h"
 
 namespace esphome {
